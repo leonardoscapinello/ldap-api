@@ -6,12 +6,13 @@ import bufferFrom from 'buffer-from';
 
 var LdapClient = require('ldapjs-client');
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 var client = new LdapClient({ 
         url: ldapConfig.server,
         tlsOptions: { 
         ca: [
-            fs.readFileSync('src/config/certificates/certificado_ad.cer')
+            fs.readFileSync('src/config/certificates/certificate.p7b')
             ]
         }
     });
@@ -98,10 +99,7 @@ class ActiveDirectoryController {
             }else if(type === "modifyDN"){
 
                 const changeOptions = options[0].cn;    
-                console.log('-----------------------------------');
-                console.log(`CN=${cn},${ldapConfig.adSuffix}`);
-                console.log(`CN=${cn},${changeOptions}`);
-                await client.modifyDN(`CN=${cn},${ldapConfig.adSuffix}`, `CN=${cn},${changeOptions}`).then(function(response){                    
+                await client.modifyDN(`${cn}`, `${changeOptions}`).then(function(response){                    
                     results.push(response);
                 }).catch(function(error){
                     results.push({error: error});
@@ -118,16 +116,11 @@ class ActiveDirectoryController {
                     }
                 };
 
-                console.log(newPassword);
-
                 await client.modify(`CN=${cn}, ${ldapConfig.adSuffix}`, changeOptions).then(function(response){                    
                     results.push(response);
                 }).catch(function(error){
                     console.log(error);
                 });
-
-
-                
 
             }
 

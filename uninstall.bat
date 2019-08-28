@@ -1,0 +1,9 @@
+@ECHO OFF
+
+SET SERVICENAME=ResetPasswordNode
+SET NSSM="%CD%\nssm\nssm.exe"
+
+ECHO STOPPING SERVICE %SERVICENAME%
+
+%NSSM% stop %SERVICENAME%
+%NSSM% remove %SERVICENAME% confirm
