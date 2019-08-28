@@ -16,9 +16,10 @@ routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware);
 
-//routes.get('/ad', ActiveDirectoryController.index);
+routes.get('/ad', ActiveDirectoryController.index);
 routes.get('/ad/:cpf', ActiveDirectoryController.show);
-//routes.put('/ad', ActiveDirectoryController.update);
+routes.put('/ad', ActiveDirectoryController.update);
+routes.put('/ad/resetPassword', ActiveDirectoryController.update);
 
 
 routes.put('/users', UserController.update);
